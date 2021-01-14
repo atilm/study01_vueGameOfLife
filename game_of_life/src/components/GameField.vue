@@ -2,7 +2,7 @@
   <div>
     <div>
       <button v-on:click="reset()">New Game</button>
-      <button v-on:click="run()">Start</button>
+      <button v-on:click="run()">Next</button>
       <button>Pause</button>
     </div>
     <div class="wrapper">
@@ -33,7 +33,8 @@ export default {
       update_cells(this.game, this.cells);
     },
     run: function() {
-      this.a = 3;
+      this.game.Evolve();
+      update_cells(this.game, this.cells);
     }
   }
 }
