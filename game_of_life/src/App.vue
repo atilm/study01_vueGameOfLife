@@ -1,16 +1,17 @@
 <template>
   <div id="app">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h1>Game of Life</h1>
+    <GameField msg="Welcome to Your Vue.js App"/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import GameField from './components/GameField.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    GameField
   }
 }
 </script>
