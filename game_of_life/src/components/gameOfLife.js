@@ -1,10 +1,12 @@
 export default class GameOfLife{
     constructor(rows, columns, aliveProbability) {
-        this.rowCount = rows;
-        this.columnCount = columns;
-        this.aliveProbability = aliveProbability;
+        let spec = {
+            rowCount: rows,
+            columnCount: columns,
+            aliveProbability: aliveProbability
+        };
 
-        this.cellRows = this.createCells(rows, columns, aliveProbability);
+        this.cellRows = this.createCells(spec);
     }
 
     IsAlive(row, column) {
@@ -12,24 +14,24 @@ export default class GameOfLife{
     }
 
     RowCount() {
-        return this.rowCount;
+        return this.cellRows.length;
     }
 
     ColumnCount() {
-        return this.columnCount;
+        return this.cellRows[0].length;
     }
 
-    createCells(rowCount, columnCount, aliveProbability) {
+    createCells(spec) {
         let rows = []
-        for (let r = 0; r < rowCount; r++)
-            rows.push(this.createRow(columnCount, aliveProbability));
+        for (let r = 0; r < spec.rowCount; r++)
+            rows.push(this.createRow(spec));
         return rows;
     }
 
-    createRow(columnCount, aliveProbability) {
+    createRow(spec) {
         let row = []
-        for (let c = 0; c < columnCount; c++)
-            row.push(this.randomAlive(aliveProbability));
+        for (let c = 0; c < spec.columnCount; c++)
+            row.push(this.randomAlive(spec.aliveProbability));
         return row;
     }
 
