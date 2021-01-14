@@ -2,7 +2,7 @@
   <div>
     <div>
       <button v-on:click="reset()">New Game</button>
-      <button>Start</button>
+      <button v-on:click="run()">Start</button>
       <button>Pause</button>
     </div>
     <div class="wrapper">
@@ -13,11 +13,15 @@
 </template>
 
 <script>
+import GameOfLife from "./gameOfLife"
+
 export default {
   name: 'GameField',
   data: function() {
+    this.game = new GameOfLife(20, 20, 0.1);
+
     return {
-      cells: create_cells(20, 20)
+      cells: create_cells(this.game)
     }
   },
   props: {
@@ -25,25 +29,29 @@ export default {
   },
   methods: {
     reset: function() {
-      reset_cells(20, 20, this.cells, 0.1)
+      this.game = new GameOfLife(20, 20, 0.1);
+      update_cells(this.game, this.cells);
+    },
+    run: function() {
+      this.a = 3;
     }
   }
 }
 
-function create_cells(rowCount, colCount){
+function create_cells(game){
   let cells = [];
-  reset_cells(rowCount, colCount, cells, 0);
+  update_cells(game, cells);
   return cells;
 }
 
-function reset_cells(rowCount, colCount, cells, aliveProbability){
+function update_cells(game, cells){
   cells.splice(0,cells.length)
   let count = 0;
-  for (let r = 0; r < rowCount; r++) {
-    for (let c = 0; c < colCount; c++) {
+  for (let r = 0; r < game.RowCount(); r++) {
+    for (let c = 0; c < game.ColumnCount(); c++) {
       cells.push({
         key: count++,
-        isAlive: Math.random() < aliveProbability,
+        isAlive: game.IsAlive(r, c),
         row: r+1,
         column: c+1
       })
