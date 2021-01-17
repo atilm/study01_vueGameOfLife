@@ -14,6 +14,7 @@
 
 <script>
 import GameOfLife from "./gameOfLife"
+import Animation from "./animation"
 
 export default {
   name: 'GameField',
@@ -30,25 +31,24 @@ export default {
   },
   methods: {
     reset: function() {
-      this.pause();
+      if (this.animation != null)
+        this.animation?.pause();
       this.game = new GameOfLife(20, 20, 0.25);
-      update_cells(this.game, this.cells);
+      this.animation = new Animation(() => this.step(), 200);
+      this.update();
     },
     run: function() {
-      this.running = true;
-      this.loop();
+      this.animation.run();
     },
     pause: function() {
-      this.running = false;
-    },
-    loop: function() {
-      this.game.Evolve();
-      update_cells(this.game, this.cells);
-      if (this.running === true)
-        setTimeout(this.step, 200);
+      this.animation.pause();
     },
     step: function() {
-      requestAnimationFrame(this.loop);
+      this.game.Evolve();
+      this.update();
+    },
+    update: function() {
+      update_cells(this.game, this.cells);
     }
   }
 }
