@@ -1,9 +1,8 @@
 export default class GameOfLife{
-    constructor(rows, columns, aliveProbability) {
+    constructor(rows, columns) {
         let spec = {
             rowCount: rows,
             columnCount: columns,
-            aliveProbability: aliveProbability
         };
 
         this.rowCount = rows;
@@ -21,6 +20,10 @@ export default class GameOfLife{
 
     IsAlive(row, column) {
         return this.cellRows[row][column];
+    }
+
+    SetCell(row, column, isAlive) {
+        this.cellRows[row][column] = isAlive;
     }
 
     RowCount() {
@@ -41,12 +44,8 @@ export default class GameOfLife{
     createRow(spec) {
         let row = []
         for (let c = 0; c < spec.columnCount; c++)
-            row.push(this.randomAlive(spec.aliveProbability));
+            row.push(false);
         return row;
-    }
-
-    randomAlive(aliveProbability) {
-        return Math.random() < aliveProbability;
     }
 
     count_neighbours(row, column) {

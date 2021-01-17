@@ -15,15 +15,13 @@
 <script>
 import GameOfLife from "./gameOfLife"
 import Animation from "./animation"
-import {create_cells, update_cells} from "./helpers"
+import {create_cells, map_cells_to_game, map_game_to_cells} from "./helpers"
 
 export default {
   name: 'GameField',
   data: function() {
-    this.game = new GameOfLife(20, 20, 0.1);
-
     return {
-      cells: create_cells(this.game),
+      cells: create_cells(new Array(0), 20, 20, 0.25),
       running: false
     }
   },
@@ -33,11 +31,13 @@ export default {
   methods: {
     reset: function() {
       this.animation?.pause();
-      this.game = new GameOfLife(20, 20, 0.25);
-      this.animation = new Animation(() => this.step(), 200);
-      this.update();
+      create_cells(this.cells, 20, 20, 0.25);
     },
     run: function() {
+      this.animation?.pause();
+      this.game = new GameOfLife(20, 20);
+      map_cells_to_game(this.cells, this.game);
+      this.animation = new Animation(() => this.step(), 200);
       this.animation.run();
     },
     pause: function() {
@@ -45,10 +45,7 @@ export default {
     },
     step: function() {
       this.game.Evolve();
-      this.update();
-    },
-    update: function() {
-      update_cells(this.game, this.cells);
+      map_game_to_cells(this.game, this.cells);
     }
   }
 }
