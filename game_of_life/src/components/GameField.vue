@@ -6,7 +6,9 @@
       <button v-on:click="pause()">Pause</button>
     </div>
     <div class="wrapper">
-      <div class="deadCell" v-for="cell in cells" :key="cell.key" v-bind:class="{ aliveCell: cell.isAlive}" v-bind:style="{ gridRow: cell.row, gridColumn: cell.column }">
+      <div class="deadCell" v-for="cell in cells" :key="cell.key" 
+      v-bind:class="{ aliveCell: cell.isAlive}" 
+      v-bind:style="{ gridRow: cell.row, gridColumn: cell.column }">
       </div>
     </div>
   </div>
@@ -17,11 +19,18 @@ import GameOfLife from "./gameOfLife"
 import Animation from "./animation"
 import {create_cells, map_cells_to_game, map_game_to_cells} from "./helpers"
 
+const dimensions = {
+  X: 20,
+  Y: 20
+};
+
 export default {
   name: 'GameField',
   data: function() {
     return {
-      cells: create_cells(new Array(0), 20, 20, 0.25),
+      rowCount: dimensions.X,
+      columnCount: dimensions.Y,
+      cells: create_cells(new Array(0), dimensions.X, dimensions.Y, 0.25),
       running: false
     }
   },
@@ -31,11 +40,11 @@ export default {
   methods: {
     reset: function() {
       this.animation?.pause();
-      create_cells(this.cells, 20, 20, 0.25);
+      create_cells(this.cells, this.rowCount, this.columnCount, 0.25);
     },
     run: function() {
       this.animation?.pause();
-      this.game = new GameOfLife(20, 20);
+      this.game = new GameOfLife(this.rowCount, this.columnCount);
       map_cells_to_game(this.cells, this.game);
       this.animation = new Animation(() => this.step(), 200);
       this.animation.run();
