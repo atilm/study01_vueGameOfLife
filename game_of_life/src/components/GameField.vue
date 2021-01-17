@@ -2,8 +2,8 @@
   <div>
     <div>
       <button v-on:click="reset()">New Game</button>
-      <button v-on:click="run()">Next</button>
-      <button>Pause</button>
+      <button v-on:click="run()">Run</button>
+      <button v-on:click="pause()">Pause</button>
     </div>
     <div class="wrapper">
       <div class="deadCell" v-for="cell in cells" :key="cell.key" v-bind:class="{ aliveCell: cell.isAlive}" v-bind:style="{ gridRow: cell.row, gridColumn: cell.column }">
@@ -21,7 +21,8 @@ export default {
     this.game = new GameOfLife(20, 20, 0.1);
 
     return {
-      cells: create_cells(this.game)
+      cells: create_cells(this.game),
+      running: false
     }
   },
   props: {
@@ -29,12 +30,25 @@ export default {
   },
   methods: {
     reset: function() {
-      this.game = new GameOfLife(20, 20, 0.1);
+      this.pause();
+      this.game = new GameOfLife(20, 20, 0.25);
       update_cells(this.game, this.cells);
     },
     run: function() {
+      this.running = true;
+      this.loop();
+    },
+    pause: function() {
+      this.running = false;
+    },
+    loop: function() {
       this.game.Evolve();
       update_cells(this.game, this.cells);
+      if (this.running === true)
+        setTimeout(this.step, 200);
+    },
+    step: function() {
+      requestAnimationFrame(this.loop);
     }
   }
 }
