@@ -15,6 +15,7 @@
 <script>
 import GameOfLife from "./gameOfLife"
 import Animation from "./animation"
+import {create_cells, update_cells} from "./helpers"
 
 export default {
   name: 'GameField',
@@ -31,8 +32,7 @@ export default {
   },
   methods: {
     reset: function() {
-      if (this.animation != null)
-        this.animation?.pause();
+      this.animation?.pause();
       this.game = new GameOfLife(20, 20, 0.25);
       this.animation = new Animation(() => this.step(), 200);
       this.update();
@@ -49,27 +49,6 @@ export default {
     },
     update: function() {
       update_cells(this.game, this.cells);
-    }
-  }
-}
-
-function create_cells(game){
-  let cells = [];
-  update_cells(game, cells);
-  return cells;
-}
-
-function update_cells(game, cells){
-  cells.splice(0,cells.length)
-  let count = 0;
-  for (let r = 0; r < game.RowCount(); r++) {
-    for (let c = 0; c < game.ColumnCount(); c++) {
-      cells.push({
-        key: count++,
-        isAlive: game.IsAlive(r, c),
-        row: r+1,
-        column: c+1
-      })
     }
   }
 }

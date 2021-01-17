@@ -6,6 +6,9 @@ export default class Animation {
     }
 
     run() {
+        if (this.running)
+            return;
+        
         this.running = true;
         this.animate(this.step);
     }
