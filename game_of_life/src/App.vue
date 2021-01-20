@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <h1>Conway's Game of Life</h1>
-    <GameField msg="Welcome to Your Vue.js App"/>
+    <GameField/>
   </div>
 </template>
 

@@ -6,15 +6,15 @@
       <button v-on:click="pause()">Pause</button>
     </div>
     <div class="wrapper">
-      <div class="deadCell" v-for="cell in cells" :key="cell.key" 
-      v-bind:class="{ aliveCell: cell.isAlive}" 
-      v-bind:style="{ gridRow: cell.row, gridColumn: cell.column }">
-      </div>
+      <cell  v-for="cell in cells" :key="cell.key" 
+      v-bind:alive=cell.isAlive
+      v-bind:style="{ gridRow: cell.row, gridColumn: cell.column }" />
     </div>
   </div>
 </template>
 
 <script>
+import Cell from "./Cell.vue"
 import GameOfLife from "./gameOfLife"
 import Animation from "./animation"
 import {create_cells, map_cells_to_game, map_game_to_cells} from "./helpers"
@@ -34,8 +34,8 @@ export default {
       running: false
     }
   },
-  props: {
-    msg: String
+  components: {
+    Cell
   },
   methods: {
     reset: function() {
@@ -90,13 +90,4 @@ button {
   margin: auto;
   border-radius: 10px;
 }
-
-.deadCell{
-  background-color: rgb(155, 175, 201);
-}
-
-.aliveCell{
-  background-color: rgb(201, 85, 129)
-}
-
 </style>
