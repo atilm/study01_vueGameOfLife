@@ -1,21 +1,23 @@
 export default class GameOfLife{
     constructor(rows, columns) {
-        let spec = {
-            rowCount: rows,
-            columnCount: columns,
-        };
-
         this.rowCount = rows;
         this.columnCount = columns;
-        this.cellRows = this.createCells(spec);
+        this.cellRows = this.createCells(this.spec(rows, columns));
     }
 
     Evolve() {
-        for (let r = 0; r < this.rowCount; r++)
+        let newCellRows = [];
+
+        for (let r = 0; r < this.rowCount; r++){
+            let newRow = [];
             for (let c = 0; c < this.columnCount; c++){
                 let neighbourCount = this.count_neighbours(r, c);
-                this.cellRows[r][c] = this.evolve_cell(this.IsAlive(r,c), neighbourCount);
+                newRow.push(this.evolve_cell(this.IsAlive(r, c), neighbourCount));
             }
+            newCellRows.push(newRow);
+        }
+        
+        this.cellRows = newCellRows;
     }
 
     IsAlive(row, column) {
@@ -79,6 +81,13 @@ export default class GameOfLife{
                 return currentState;
             default:
                 return false;
+        }
+    }
+
+    spec(rowCount, columnCount) {
+        return {
+            rowCount: rowCount,
+            columnCount: columnCount,
         }
     }
 }
