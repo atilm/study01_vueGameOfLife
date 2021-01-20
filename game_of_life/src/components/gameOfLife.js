@@ -6,18 +6,12 @@ export default class GameOfLife{
     }
 
     Evolve() {
-        let newCellRows = [];
-
-        for (let r = 0; r < this.rowCount; r++){
-            let newRow = [];
-            for (let c = 0; c < this.columnCount; c++){
-                let neighbourCount = this.count_neighbours(r, c);
-                newRow.push(this.evolve_cell(this.IsAlive(r, c), neighbourCount));
-            }
-            newCellRows.push(newRow);
-        }
-        
-        this.cellRows = newCellRows;
+        this.cellRows = this.cellRows.map(
+            (row, rowIndex) => row.map(
+                (currentState, columnIndex) => this.evolve_cell(
+                        currentState,
+                        this.count_neighbours(rowIndex, columnIndex))
+        ));
     }
 
     IsAlive(row, column) {

@@ -99,8 +99,12 @@ test('game evolves correctly', () => {
 })
 
 function assert_game(expectedCells, game) {
-    for (let r = 0; r < expectedCells.length; r++)
-        for (let c = 0; c < expectedCells[0].length; c++){
-            expect(game.IsAlive(r, c)).toBe(expectedCells[r][c] != 0);
-        }
+    expectedCells.map((row, r) =>
+        row.map((value, c) => 
+            expect(game.IsAlive(r, c)).toBe(alive(value))
+    ));
+}
+
+function alive(expectedValue) {
+    return expectedValue != 0;
 }
