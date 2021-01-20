@@ -8,7 +8,8 @@
     <div class="wrapper">
       <cell  v-for="cell in cells" :key="cell.key" 
       v-bind:alive=cell.isAlive
-      v-bind:style="{ gridRow: cell.row, gridColumn: cell.column }" />
+      v-bind:style="{ gridRow: cell.row, gridColumn: cell.column }" 
+      v-on:click.native="toggle_cell(cell)" />
     </div>
   </div>
 </template>
@@ -55,6 +56,9 @@ export default {
     step: function() {
       this.game.Evolve();
       map_game_to_cells(this.game, this.cells);
+    },
+    toggle_cell: function(cell) {
+      cell.isAlive = !cell.isAlive;
     }
   }
 }

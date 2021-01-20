@@ -13,8 +13,8 @@ export default class GameOfLife{
     Evolve() {
         for (let r = 0; r < this.rowCount; r++)
             for (let c = 0; c < this.columnCount; c++){
-                let neighbours = this.count_neighbours(r, c);
-                this.cellRows[r][c] = this.evolve_cell(this.cellRows[r][c], neighbours);
+                let neighbourCount = this.count_neighbours(r, c);
+                this.cellRows[r][c] = this.evolve_cell(this.IsAlive(r,c), neighbourCount);
             }
     }
 
@@ -68,7 +68,7 @@ export default class GameOfLife{
         if (column < 0 || column >= this.columnCount)
             return 0;
         
-        return this.cellRows[row][column] ? 1 : 0;
+        return this.IsAlive(row, column) ? 1 : 0;
     }
 
     evolve_cell(currentState, neighbourCount) {
